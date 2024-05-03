@@ -1,6 +1,6 @@
 # Ebola Explorer
 
-DSCI 532 individual-assignment for Merete Lutz (merete)
+A dashboard to explore the 2014-2016 Ebola virus outbreak through cases and deaths
 
 ## The Outbreak
 
