@@ -1,0 +1,119 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-04-08"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+```{r cars}
+data_long <- read.csv("data/raw/ebola_2014_2016_clean.csv") |>
+  mutate(
+    Cases = Cumulative.no..of.confirmed..probable.and.suspected.cases,
+    Deaths = Cumulative.no..of.confirmed..probable.and.suspected.deaths,
+    Date = as.Date(Date)
+  ) |>
+  select(-Cumulative.no..of.confirmed..probable.and.suspected.cases, 
+         -Cumulative.no..of.confirmed..probable.and.suspected.deaths,) |>
+  mutate(Cases = if_else(Country == 'Liberia' & Date > "2015-06-19",
+                         10666,
+                         Cases)) |>
+  mutate(Deaths = if_else(Country == 'Liberia' & Date > "2015-06-19",
+                         4806,
+                         Deaths)) |>
+  pivot_longer(cols = c(Cases, Deaths), 
+               names_to = 'Statistic', 
+               values_to = 'Value')
+data_long
+```
+```{r}
+write.csv(data_long, file = "data/clean/ebola_long.csv", row.names = FALSE)
+
+```
+
+```{r}
+data_short <- read.csv("data/raw/ebola_2014_2016_clean.csv") |>
+  mutate(
+    Cases = Cumulative.no..of.confirmed..probable.and.suspected.cases,
+    Deaths = Cumulative.no..of.confirmed..probable.and.suspected.deaths,
+    Date = as.Date(Date)
+  ) |>
+  select(-Cumulative.no..of.confirmed..probable.and.suspected.cases, 
+         -Cumulative.no..of.confirmed..probable.and.suspected.deaths,)|>
+  mutate(Cases = if_else(Country == 'Liberia' & Date > "2015-06-19",
+                         10666,
+                         Cases)) |>
+  mutate(Deaths = if_else(Country == 'Liberia' & Date > "2015-06-19",
+                         4806,
+                         Deaths))
+data_short
+```
+```{r}
+write.csv(data_short, file = "data/clean/ebola_short.csv", row.names = FALSE)
+```
+
+```{r}
+colnames(data_short)
+```
+
+```{r}
+ggplot(filter(data_short, Country == 'Guinea'),
+       aes(x = Date, y = Value, color = Statistic, group = Statistic)) +
+  geom_line(aes(color = factor(Statistic))) +
+  scale_color_manual(values = c("Cases" = "red", "Deaths" = "purple")) +
+  labs(
+    x = "Date",
+    y = "Number of Cases or Deaths",
+    title = "Cumulative Number of Confirmed, Probable, and Suspected Cases and Deaths"
+  )
+```
+
+
+"cerulean"  "cosmo"     "cyborg"    "darkly"    "flatly"    
+"journal"   "litera"    "lumen"     "lux"       "materia"   
+"minty"    "morph"     "pulse"     "quartz"    "sandstone" 
+"simplex"   "sketchy"   "slate"     "solar"     "spacelab"  
+"superhero" "united"   "vapor"     "yeti"      "zephyr" 
+
+
+
+```{r}
+plot_ly(data, type='choropleth', locationmode = 'country names',
+                   locations=~Country, z=~Cases, text=~Country, color=~Cases,
+                   colorscale='Portland') %>%
+  layout(title = "Worldwide Cases")
+```
+
+
+
+```{r}
+data <- read.csv("data/raw/ebola_2014_2016_clean.csv") |>
+  mutate(
+    Cases = Cumulative.no..of.confirmed..probable.and.suspected.cases,
+    Deaths = Cumulative.no..of.confirmed..probable.and.suspected.deaths,
+    Date = as.Date(Date)
+  ) |>
+  select(-Cumulative.no..of.confirmed..probable.and.suspected.cases, 
+         -Cumulative.no..of.confirmed..probable.and.suspected.deaths,) |>
+  mutate(Cases = if_else(Country == 'Liberia' & Date > "2015-06-19",
+                         10666,
+                         Cases)) |>
+  mutate(Deaths = if_else(Country == 'Liberia' & Date > "2015-06-19",
+                         4806,
+                         Deaths))
+data
+```
+
+
+```{r}
+ggplot(filter(data, Country =='Liberia'),
+               aes(x = Date, y = Deaths)) +
+          geom_line()
+```
+
