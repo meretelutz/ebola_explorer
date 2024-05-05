@@ -10,10 +10,10 @@ library(bsicons)
 
 
 # Load data
-data_long <- read.csv("../data/clean/ebola_long.csv")
+data_long <- read.csv("data/ebola_long.csv")
 data_long$Date <- as.Date(data_long$Date)
 
-data_short <- read.csv("../data/clean/ebola_short.csv")
+data_short <- read.csv("data/ebola_short.csv")
 data_short$Date <- as.Date(data_short$Date)
 
 
