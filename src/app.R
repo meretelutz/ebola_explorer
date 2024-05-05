@@ -22,7 +22,7 @@ ui <- fluidPage(
   theme = bslib::bs_theme(bootswatch = 'superhero'),
   
   fluidRow(
-    titlePanel(h1("Ebola Explorer")),
+    titlePanel(("Ebola Explorer")),
     h6("Exploring the 2014-2016 Ebola Outbreak through cumulative cases, deaths, and case fatality rate")
     ),
   
